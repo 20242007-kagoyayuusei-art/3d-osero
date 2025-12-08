@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class hello
+public class hello : MonoBehaviour
 {
-    
+    private void Start()
+    {
+        Debug.Log("Hello");
+    }
 }
