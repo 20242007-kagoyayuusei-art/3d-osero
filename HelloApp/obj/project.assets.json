@@ -8,19 +8,19 @@
     "net10.0": []
   },
   "packageFolders": {
-    "C:\\Users\\s20242015\\.nuget\\packages\\": {}
+    "C:\\Users\\s20242007\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\s20242015\\Documents\\saisyuu\\3d-osero\\HelloApp\\HelloApp.csproj",
+      "projectUniqueName": "C:\\Users\\s20242007\\Documents\\GitHub\\3d-osero\\3d-osero\\HelloApp\\HelloApp.csproj",
       "projectName": "HelloApp",
-      "projectPath": "C:\\Users\\s20242015\\Documents\\saisyuu\\3d-osero\\HelloApp\\HelloApp.csproj",
-      "packagesPath": "C:\\Users\\s20242015\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\s20242015\\Documents\\saisyuu\\3d-osero\\HelloApp\\obj\\",
+      "projectPath": "C:\\Users\\s20242007\\Documents\\GitHub\\3d-osero\\3d-osero\\HelloApp\\HelloApp.csproj",
+      "packagesPath": "C:\\Users\\s20242007\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\s20242007\\Documents\\GitHub\\3d-osero\\3d-osero\\HelloApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\s20242015\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\s20242007\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
