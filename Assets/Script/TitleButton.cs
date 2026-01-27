@@ -7,6 +7,6 @@ public class TitleButton : MonoBehaviour
 {
     public void StartBtn()
     {
-        SceneManager.LoadScene("S");
+        SceneManager.LoadScene("menu");
     }
 }

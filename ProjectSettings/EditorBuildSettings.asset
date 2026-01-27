@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/title.unity
     guid: c6003377a3416fb409da23f91394e5c0
+  - enabled: 1
+    path: Assets/main_osero/sub_osero/Scenes/Game.unity
+    guid: ba554a8323a9e444593da48310d8a951
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
