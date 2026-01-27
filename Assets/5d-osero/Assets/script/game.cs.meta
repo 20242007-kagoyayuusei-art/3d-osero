@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 9b412418ec4ef6c40aacd3afd87f60c4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _stonePrefab: {fileID: 2948572968835693933, guid: ca0e76a3bcb939c438df92d5eecf9b40, type: 3}
+  - _stoneBase: {instanceID: 0}
+  - _selfPlayer: {instanceID: 0}
+  - _enemyPlayer: {instanceID: 0}
+  - _cursor: {instanceID: 0}
+  - _blackScoreText: {instanceID: 0}
+  - _whiteScoreText: {instanceID: 0}
+  - _resultText: {instanceID: 0}
+  - _seAudioSource: {instanceID: 0}
+  - _cursorMoveSe: {instanceID: 0}
+  - _stoneAppearSe: {instanceID: 0}
+  - _stoneReverseSe: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
