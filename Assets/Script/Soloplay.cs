@@ -7,6 +7,6 @@ public class Soloplay : MonoBehaviour
 {
     public void StartBtn()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("SampleScene");
     }
 }

@@ -310,6 +310,7 @@ GameObject:
   - component: {fileID: 377954745}
   - component: {fileID: 377954744}
   - component: {fileID: 377954743}
+  - component: {fileID: 377954746}
   m_Layer: 5
   m_Name: GameStartButton_Shadow
   m_TagString: Untagged
@@ -419,6 +420,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 377954741}
   m_CullTransparentMesh: 1
+--- !u!114 &377954746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377954741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 316af66fed84aec43abe36a5cc04ee53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TitleButton
 --- !u!1 &847392790
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,6 +446,7 @@ GameObject:
   - component: {fileID: 847392792}
   - component: {fileID: 847392795}
   - component: {fileID: 847392796}
+  - component: {fileID: 847392797}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -505,13 +519,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 316af66fed84aec43abe36a5cc04ee53, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 847392796}
+        m_TargetAssemblyTypeName: TitleButton, Assembly-CSharp
+        m_MethodName: StartBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -589,6 +603,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 316af66fed84aec43abe36a5cc04ee53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TitleButton
+--- !u!114 &847392797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847392790}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e0299c07ef95a64380fd04f1a07b8eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextMeshFlasher
+  flashSpeed: 2
 --- !u!1 &1084612159
 GameObject:
   m_ObjectHideFlags: 0

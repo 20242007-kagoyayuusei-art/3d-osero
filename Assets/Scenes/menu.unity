@@ -1501,6 +1501,7 @@ GameObject:
   - component: {fileID: 2063038279}
   - component: {fileID: 2063038278}
   - component: {fileID: 2063038281}
+  - component: {fileID: 2063038282}
   m_Layer: 5
   m_Name: SoloBtn
   m_TagString: Untagged
@@ -1637,6 +1638,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47889d6d9fc7f5543b43e463bc3f1710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Soloplay
+--- !u!114 &2063038282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063038276}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 316af66fed84aec43abe36a5cc04ee53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TitleButton
 --- !u!1 &2142763037
 GameObject:
   m_ObjectHideFlags: 0
