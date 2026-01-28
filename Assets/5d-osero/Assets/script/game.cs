@@ -30,7 +30,16 @@ public class Game : SingletonMonoBehaviour<Game>
     private EnemyPlayer _enemyPlayer;
 
     [SerializeField]
+    private LocalPlayer _localPlayerBlack;
+
+    [SerializeField]
+    private LocalPlayer _localPlayerWhite;
+
+    [SerializeField]
     private GameObject _cursor;
+
+    private BasePlayer _blackPlayer;
+    private BasePlayer _whitePlayer;
 
     [SerializeField]
     private TextMeshPro _blackScoreText;
@@ -81,6 +90,41 @@ public class Game : SingletonMonoBehaviour<Game>
     public Stone[][][] Stones { get { return _stones; } }
 
     private bool _isInitialized = false;
+    private GameMode _currentGameMode = GameMode.PlayerVsAI;
+
+    public enum GameMode
+    {
+        PlayerVsAI,
+        PlayerVsPlayer
+    }
+
+    public void SetupGameMode(GameMode mode)
+    {
+        _currentGameMode = mode;
+        switch (mode)
+        {
+            case GameMode.PlayerVsAI:
+                _blackPlayer = _selfPlayer;
+                _whitePlayer = _enemyPlayer;
+                // LocalPlayer は非アクティブ
+                if (_localPlayerBlack != null) _localPlayerBlack.gameObject.SetActive(false);
+                if (_localPlayerWhite != null) _localPlayerWhite.gameObject.SetActive(false);
+                // SelfPlayer と EnemyPlayer はアクティブ
+                if (_selfPlayer != null) _selfPlayer.gameObject.SetActive(true);
+                if (_enemyPlayer != null) _enemyPlayer.gameObject.SetActive(true);
+                break;
+            case GameMode.PlayerVsPlayer:
+                _blackPlayer = _localPlayerBlack;
+                _whitePlayer = _localPlayerWhite;
+                // SelfPlayer と EnemyPlayer は非アクティブ
+                if (_selfPlayer != null) _selfPlayer.gameObject.SetActive(false);
+                if (_enemyPlayer != null) _enemyPlayer.gameObject.SetActive(false);
+                // LocalPlayer はアクティブ
+                if (_localPlayerBlack != null) _localPlayerBlack.gameObject.SetActive(true);
+                if (_localPlayerWhite != null) _localPlayerWhite.gameObject.SetActive(true);
+                break;
+        }
+    }
 
     private void Start()
     {
@@ -102,6 +146,9 @@ public class Game : SingletonMonoBehaviour<Game>
                 }
             }
         }
+
+        // メニューから選択されたゲームモードを設定
+        SetupGameMode(GameModeData.SelectedMode);
 
         CurrentState = State.Initializing;
     }
@@ -159,7 +206,7 @@ public class Game : SingletonMonoBehaviour<Game>
                     {
                         break;
                     }
-                    if (_selfPlayer.TryGetSelected(out var x, out var y, out var z))
+                    if (_blackPlayer.TryGetSelected(out var x, out var y, out var z))
                     {
                         _stones[y][z][x].SetActive(true, Stone.Color.Black);
                         Reverse(Stone.Color.Black, x, y, z);
@@ -170,11 +217,11 @@ public class Game : SingletonMonoBehaviour<Game>
                         }
                         else
                         {
-                            if (_enemyPlayer.CanPut())
+                            if (_whitePlayer.CanPut())
                             {
                                 CurrentState = State.WhiteTurn;
                             }
-                            else if (!_selfPlayer.CanPut())
+                            else if (!_blackPlayer.CanPut())
                             {
                                 CurrentState = State.Result;
                             }
@@ -188,7 +235,7 @@ public class Game : SingletonMonoBehaviour<Game>
                     {
                         break;
                     }
-                    if (_enemyPlayer.TryGetSelected(out var x, out var y, out var z))
+                    if (_whitePlayer.TryGetSelected(out var x, out var y, out var z))
                     {
                         _stones[y][z][x].SetActive(true, Stone.Color.White);
                         Reverse(Stone.Color.White, x, y, z);
@@ -199,11 +246,11 @@ public class Game : SingletonMonoBehaviour<Game>
                         }
                         else
                         {
-                            if (_selfPlayer.CanPut())
+                            if (_blackPlayer.CanPut())
                             {
                                 CurrentState = State.BlackTurn;
                             }
-                            else if (!_enemyPlayer.CanPut())
+                            else if (!_whitePlayer.CanPut())
                             {
                                 CurrentState = State.Result;
                             }
@@ -219,9 +266,20 @@ public class Game : SingletonMonoBehaviour<Game>
                         int blackScore;
                         int whiteScore;
                         CalcScore(out blackScore, out whiteScore);
-                        _resultText.text = blackScore > whiteScore ? "You Win"
-                            : blackScore < whiteScore ? "You Lose"
-                            : "Draw";
+                        
+                        // ゲームモードに応じて表示内容を変更
+                        if (_currentGameMode == GameMode.PlayerVsAI)
+                        {
+                            _resultText.text = blackScore > whiteScore ? "You Win"
+                                : blackScore < whiteScore ? "You Lose"
+                                : "Draw";
+                        }
+                        else // PlayerVsPlayer
+                        {
+                            _resultText.text = blackScore > whiteScore ? "Black Win (Player1)"
+                                : blackScore < whiteScore ? "White Win (Player2)"
+                                : "Draw";
+                        }
                         _resultText.gameObject.SetActive(true);
                     }
 
