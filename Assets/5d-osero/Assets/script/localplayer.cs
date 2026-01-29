@@ -12,6 +12,13 @@ public class LocalPlayer : BasePlayer
     [SerializeField]
     private PlayerNumber _playerNumber = PlayerNumber.Player1;
 
+    // 外部からプレイヤー番号を設定できるようにする
+    public PlayerNumber AssignedPlayerNumber
+    {
+        get => _playerNumber;
+        set => _playerNumber = value;
+    }
+
     public override Stone.Color MyColor
     {
         get { return _playerNumber == PlayerNumber.Player1 ? Stone.Color.Black : Stone.Color.White; }
@@ -37,9 +44,16 @@ public class LocalPlayer : BasePlayer
         return base.TryGetSelected(out x, out y, out z);
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        _cachedCursorTransform = Game.Instance.Cursor.transform;
+        // Cursor は Game に存在することが前提なので OnEnable で確実にキャッシュ
+        if (Game.Instance != null && Game.Instance.Cursor != null)
+        {
+            _cachedCursorTransform = Game.Instance.Cursor.transform;
+            // 初期位置をリセット
+            _cursorPos = new Vector3Int(0, 0, 0);
+            _cachedCursorTransform.localPosition = _cursorPos * 10;
+        }
     }
 
     private void Update()
@@ -127,7 +141,8 @@ public class LocalPlayer : BasePlayer
 
         if (keyboard.enterKey.wasPressedThisFrame || keyboard.spaceKey.wasPressedThisFrame)
         {
-            if (Game.Instance.CalcTotalReverseCount(MyColor, _cursorPos.x, _cursorPos.y, _cursorPos.z) > 0)
+            var count = Game.Instance.CalcTotalReverseCount(MyColor, _cursorPos.x, _cursorPos.y, _cursorPos.z);
+            if (count > 0)
             {
                 _decidedPos = _cursorPos;
                 Game.Instance.Cursor.SetActive(false);

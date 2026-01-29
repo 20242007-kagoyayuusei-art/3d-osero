@@ -39,7 +39,16 @@ public class Game : SingletonMonoBehaviour<Game>
     private EnemyPlayer _enemyPlayer;
 
     [SerializeField]
+    private LocalPlayer _localPlayerBlack;
+
+    [SerializeField]
+    private LocalPlayer _localPlayerWhite;
+
+    [SerializeField]
     private GameObject _cursor;
+
+    private BasePlayer _blackPlayer;
+    private BasePlayer _whitePlayer;
 
     [SerializeField]
     private TextMeshPro _blackScoreText;
@@ -91,6 +100,38 @@ public class Game : SingletonMonoBehaviour<Game>
 
     private bool _isInitialized = false;
 
+    private GameMode _currentGameMode = GameMode.PlayerVsAI;
+
+    public void SetupGameMode(GameMode mode)
+    {
+        _currentGameMode = mode;
+        switch (mode)
+        {
+            case GameMode.PlayerVsAI:
+                _blackPlayer = _selfPlayer;
+                _whitePlayer = _enemyPlayer;
+                if (_localPlayerBlack != null) _localPlayerBlack.gameObject.SetActive(false);
+                if (_localPlayerWhite != null) _localPlayerWhite.gameObject.SetActive(false);
+                if (_selfPlayer != null) _selfPlayer.gameObject.SetActive(true);
+                if (_enemyPlayer != null) _enemyPlayer.gameObject.SetActive(true);
+                break;
+            case GameMode.PlayerVsPlayer:
+                _blackPlayer = _localPlayerBlack;
+                _whitePlayer = _localPlayerWhite;
+                if (_selfPlayer != null) _selfPlayer.gameObject.SetActive(false);
+                if (_enemyPlayer != null) _enemyPlayer.gameObject.SetActive(false);
+                if (_localPlayerBlack != null) {
+                    _localPlayerBlack.AssignedPlayerNumber = LocalPlayer.PlayerNumber.Player1;
+                    _localPlayerBlack.gameObject.SetActive(true);
+                }
+                if (_localPlayerWhite != null) {
+                    _localPlayerWhite.AssignedPlayerNumber = LocalPlayer.PlayerNumber.Player2;
+                    _localPlayerWhite.gameObject.SetActive(true);
+                }
+                break;
+        }
+    }
+
     private void Start()
     {
         _stones = new Stone[YNUM][][];
@@ -111,6 +152,9 @@ public class Game : SingletonMonoBehaviour<Game>
                 }
             }
         }
+
+        // メニューで選択されたゲームモードを反映
+        SetupGameMode(GameModeData.SelectedMode);
 
         CurrentState = State.Initializing;
     }
@@ -168,7 +212,7 @@ public class Game : SingletonMonoBehaviour<Game>
                     {
                         break;
                     }
-                    if (_selfPlayer.TryGetSelected(out var x, out var y, out var z))
+                    if (_blackPlayer != null && _blackPlayer.TryGetSelected(out var x, out var y, out var z))
                     {
                         _stones[y][z][x].SetActive(true, Stone.Color.Black);
                         Reverse(Stone.Color.Black, x, y, z);
@@ -179,11 +223,11 @@ public class Game : SingletonMonoBehaviour<Game>
                         }
                         else
                         {
-                            if (_enemyPlayer.CanPut())
+                            if (_whitePlayer != null && _whitePlayer.CanPut())
                             {
                                 CurrentState = State.WhiteTurn;
                             }
-                            else if (!_selfPlayer.CanPut())
+                            else if (_blackPlayer != null && !_blackPlayer.CanPut())
                             {
                                 CurrentState = State.Result;
                             }
@@ -197,7 +241,7 @@ public class Game : SingletonMonoBehaviour<Game>
                     {
                         break;
                     }
-                    if (_enemyPlayer.TryGetSelected(out var x, out var y, out var z))
+                    if (_whitePlayer != null && _whitePlayer.TryGetSelected(out var x, out var y, out var z))
                     {
                         _stones[y][z][x].SetActive(true, Stone.Color.White);
                         Reverse(Stone.Color.White, x, y, z);
@@ -208,11 +252,11 @@ public class Game : SingletonMonoBehaviour<Game>
                         }
                         else
                         {
-                            if (_selfPlayer.CanPut())
+                            if (_blackPlayer != null && _blackPlayer.CanPut())
                             {
                                 CurrentState = State.BlackTurn;
                             }
-                            else if (!_enemyPlayer.CanPut())
+                            else if (_whitePlayer != null && !_whitePlayer.CanPut())
                             {
                                 CurrentState = State.Result;
                             }

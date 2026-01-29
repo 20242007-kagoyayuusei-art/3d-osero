@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PutStoneByMouse : MonoBehaviour
 {
@@ -6,11 +7,15 @@ public class PutStoneByMouse : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        if (Mouse.current == null) return;
 
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(
+                Mouse.current.position.ReadValue()
+            );
+
+            RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
                 Cell cell = hit.collider.GetComponent<Cell>();
