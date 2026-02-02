@@ -43,7 +43,7 @@ public class CameraController : MonoBehaviour
         currentY = angles.x;
 
         // 初期距離を設定（インスペクターの値を使う）
-        //currentDistance = defaultDistance;
+        currentDistance = defaultDistance;
     }
 
     void LateUpdate()
