@@ -47,6 +47,9 @@ public class Game : SingletonMonoBehaviour<Game>
     [SerializeField]
     private GameObject _cursor;
 
+    [SerializeField]
+    private GameObject _board;
+
     private BasePlayer _blackPlayer;
     private BasePlayer _whitePlayer;
 
@@ -451,6 +454,23 @@ public class Game : SingletonMonoBehaviour<Game>
             }
         }
         return false;
+    }
+
+    public void SetBoardActive(bool active)
+    {
+        if (_board != null)
+            _board.SetActive(active);
+    }
+
+    public void ToggleBoard()
+    {
+        if (_board != null)
+            _board.SetActive(!_board.activeSelf);
+    }
+
+    public bool IsBoardActive()
+    {
+        return _board != null && _board.activeSelf;
     }
 
     public void PlayCursorMoveSe()
