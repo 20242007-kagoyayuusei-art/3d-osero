@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     
     [Header("回転設定")]
     [SerializeField] private float rotateSpeed = 0.1f;
-    [SerializeField] private float verticalLimitMin = 5f;
+    [SerializeField] private float verticalLimitMin = -180f;
     [SerializeField] private float verticalLimitMax = 80f;
 
     [Header("ズーム設定")]
@@ -41,6 +41,7 @@ public class CameraController : MonoBehaviour
         Vector3 angles = transform.eulerAngles;
         currentX = angles.y;
         currentY = angles.x;
+        if (currentY > 180f) currentY -= 360f;
 
         // 初期距離を設定（インスペクターの値を使う）
         currentDistance = defaultDistance;
