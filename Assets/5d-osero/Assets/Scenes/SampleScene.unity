@@ -857,7 +857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraControllerMove
   target: {fileID: 528314949}
   rotateSpeed: 1
-  verticalLimitMin: 5
+  verticalLimitMin: -80
   verticalLimitMax: 80
   zoomSpeed: 5
   minDistance: 2
