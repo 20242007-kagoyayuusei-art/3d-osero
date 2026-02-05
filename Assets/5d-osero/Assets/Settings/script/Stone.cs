@@ -41,53 +41,50 @@ public class Stone : MonoBehaviour
 
     private void Start()
     {
-    SetActive(false, Color.Black);
-    _baseLocalPosition = transform.localPosition;
-    
+        _baseLocalPosition = transform.localPosition;
+        // Start()では何もしない - SetActive()で完全に制御する
+    }
+
+    private void HideAll()
+    {
+        CurrentState = State.None;
+        if (_black != null) _black.SetActive(false);
+        if (_white != null) _white.SetActive(false);
+        if (_dot != null) _dot.SetActive(false);
+        gameObject.SetActive(true);  // 親は表示したままにしておく
     }
 
     public void SetActive(bool value, Color color)
     {
-        if (value)
+        if (!value)
         {
-            this.CurrentColor = color;
-            this.CurrentState = State.Appearing;
-            
-            // 色に応じて正しいオブジェクトだけを有効化
-            switch (color)
-            {
-                case Color.Black:
-                    this._black.SetActive(true);
-                    this._white.SetActive(false);
-                    transform.localRotation = Quaternion.Euler(0, 0, 0);
-                    break;
-                case Color.White:
-                    this._black.SetActive(false);
-                    this._white.SetActive(true);
-                    transform.localRotation = Quaternion.Euler(0, 0, 0);
-                    break;
-            }
-            
-            this._dot.SetActive(false);
-            this._stateChangedAt = DateTime.UtcNow;
-            Game.Instance.PlayStoneAppearSe();
-        }
-        else
-        {
-            this.CurrentState = State.None;
+            HideAll();
+            gameObject.SetActive(false);
+            return;
         }
 
-        gameObject.SetActive(value);
+        gameObject.SetActive(true);
+        
+        CurrentColor = color;
+        CurrentState = State.Appearing;
+
+        if (_black != null) _black.SetActive(color == Color.Black);
+        if (_white != null) _white.SetActive(color == Color.White);
+        if (_dot != null) _dot.SetActive(false);
+
+        transform.localRotation = Quaternion.identity;
+
+        _stateChangedAt = DateTime.UtcNow;
+        Game.Instance.PlayStoneAppearSe();
     }
+
 
     public void EnableDot()
     {
-        this._black.SetActive(false);
-        this._white.SetActive(false);
-        this._dot.SetActive(true);
         gameObject.SetActive(true);
+        HideAll();
+        if (_dot != null) _dot.SetActive(true);
     }
-
     public void Reverse()
     {
         if (CurrentState == State.None)
@@ -100,13 +97,13 @@ public class Stone : MonoBehaviour
         {
             case Color.Black:
                 CurrentColor = Color.White;
-                this._black.SetActive(false);
-                this._white.SetActive(true);
+                if (this._black != null) this._black.SetActive(false);
+                if (this._white != null) this._white.SetActive(true);
                 break;
             case Color.White:
                 CurrentColor = Color.Black;
-                this._black.SetActive(true);
-                this._white.SetActive(false);
+                if (this._black != null) this._black.SetActive(true);
+                if (this._white != null) this._white.SetActive(false);
                 break;
         }
         this.CurrentState = State.Reversing;
