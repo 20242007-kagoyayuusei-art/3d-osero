@@ -47,9 +47,6 @@ public class Game : SingletonMonoBehaviour<Game>
     [SerializeField]
     private GameObject _cursor;
 
-    [SerializeField]
-    private GameObject _board;
-
     private BasePlayer _blackPlayer;
     private BasePlayer _whitePlayer;
 
@@ -61,6 +58,12 @@ public class Game : SingletonMonoBehaviour<Game>
 
     [SerializeField]
     private TextMeshPro _resultText;
+
+    [SerializeField]
+    private TextMeshProUGUI _blackTurnText;
+
+    [SerializeField]
+    private TextMeshProUGUI _whiteTurnText;
 
     [SerializeField]
     private AudioSource _seAudioSource;
@@ -160,6 +163,7 @@ public class Game : SingletonMonoBehaviour<Game>
         SetupGameMode(GameModeData.SelectedMode);
 
         CurrentState = State.Initializing;
+        UpdateTurnDisplay();
     }
 
     private void Update()
@@ -206,6 +210,7 @@ public class Game : SingletonMonoBehaviour<Game>
                 if (!IsAnimating())
                 {
                     CurrentState = State.BlackTurn;
+                    UpdateTurnDisplay();
                 }
                 break;
 
@@ -223,16 +228,19 @@ public class Game : SingletonMonoBehaviour<Game>
                         if (IsGameFinished())
                         {
                             CurrentState = State.Result;
+                            UpdateTurnDisplay();
                         }
                         else
                         {
                             if (_whitePlayer != null && _whitePlayer.CanPut())
                             {
                                 CurrentState = State.WhiteTurn;
+                                UpdateTurnDisplay();
                             }
                             else if (_blackPlayer != null && !_blackPlayer.CanPut())
                             {
                                 CurrentState = State.Result;
+                                UpdateTurnDisplay();
                             }
                         }
                     }
@@ -252,16 +260,19 @@ public class Game : SingletonMonoBehaviour<Game>
                         if (IsGameFinished())
                         {
                             CurrentState = State.Result;
+                            UpdateTurnDisplay();
                         }
                         else
                         {
                             if (_blackPlayer != null && _blackPlayer.CanPut())
                             {
                                 CurrentState = State.BlackTurn;
+                                UpdateTurnDisplay();
                             }
                             else if (_whitePlayer != null && !_whitePlayer.CanPut())
                             {
                                 CurrentState = State.Result;
+                                UpdateTurnDisplay();
                             }
                         }
                     }
@@ -286,6 +297,7 @@ public class Game : SingletonMonoBehaviour<Game>
                     {
                         _isInitialized = false;
                         CurrentState = State.Initializing;
+                        UpdateTurnDisplay();
                     }
                 }
                 break;
@@ -303,6 +315,29 @@ public class Game : SingletonMonoBehaviour<Game>
         CalcScore(out blackScore, out whiteScore);
         _blackScoreText.text = blackScore.ToString();
         _whiteScoreText.text = whiteScore.ToString();
+    }
+
+    private void UpdateTurnDisplay()
+    {
+        // まずすべて非表示
+        if (_blackTurnText != null) _blackTurnText.gameObject.SetActive(false);
+        if (_whiteTurnText != null) _whiteTurnText.gameObject.SetActive(false);
+
+        switch (CurrentState)
+        {
+            case State.BlackTurn:
+                if (_blackTurnText != null) _blackTurnText.gameObject.SetActive(true);
+                break;
+            case State.WhiteTurn:
+                if (_whiteTurnText != null) _whiteTurnText.gameObject.SetActive(true);
+                break;
+            case State.Initializing:
+                // 初期化時は表示しない
+                break;
+            case State.Result:
+                // リザルト時は表示しない
+                break;
+        }
     }
 
     private void CalcScore(out int blackScore, out int whiteScore)
@@ -454,23 +489,6 @@ public class Game : SingletonMonoBehaviour<Game>
             }
         }
         return false;
-    }
-
-    public void SetBoardActive(bool active)
-    {
-        if (_board != null)
-            _board.SetActive(active);
-    }
-
-    public void ToggleBoard()
-    {
-        if (_board != null)
-            _board.SetActive(!_board.activeSelf);
-    }
-
-    public bool IsBoardActive()
-    {
-        return _board != null && _board.activeSelf;
     }
 
     public void PlayCursorMoveSe()
